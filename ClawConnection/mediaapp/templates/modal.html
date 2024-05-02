@@ -1,0 +1,59 @@
+{% load static %}
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">New Post</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'upload' %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Content Type:</label><br>
+                        <input type="radio" id="text_only" name="content_type" value="text_only" checked>
+                        <label for="text_only">Text Only</label><br>
+                        <input type="radio" id="image_with_caption" name="content_type" value="image_with_caption">
+                        <label for="image_with_caption">Image with Caption</label>
+                    </div>
+                    <div id="image_upload_section" style="display: none;">
+                        <div class="mb-3">
+                            <label for="image_upload" class="col-form-label">Image:</label>
+                            <input type="file" name="image_upload" class="form-control" id="image_upload">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="caption" class="col-form-label">Caption:</label>
+                        <textarea class="form-control" name="caption" placeholder="Caption..." id="caption"></textarea>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Create Post</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    // Function to toggle the visibility of the image upload section
+    function toggleImageUpload() {
+        var content_type = document.querySelector('input[name="content_type"]:checked').value;
+        var image_upload_section = document.getElementById('image_upload_section');
+
+        if (content_type === 'image_with_caption') {
+            image_upload_section.style.display = 'block';
+        } else {
+            image_upload_section.style.display = 'none';
+        }
+    }
+
+    // Event listener to call the function when the radio buttons are changed
+    var radio_buttons = document.querySelectorAll('input[name="content_type"]');
+    radio_buttons.forEach(function(button) {
+        button.addEventListener('change', toggleImageUpload);
+    });
+
+    // Call the function initially to set the initial state
+    toggleImageUpload();
+</script>
